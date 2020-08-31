@@ -3,7 +3,7 @@
 #
 # Instructions: https://jamesachambers.com/minecraft-bedrock-edition-ubuntu-dedicated-server-guide/
 # To run the setup script use:
-# wget https://raw.githubusercontent.com/TheRemote/puduville/mcgarbanzo/master/SetupMinecraft.sh
+# wget https://raw.githubusercontent.com/puduville/mcgarbanzo/master/SetupMinecraft.sh
 # chmod +x SetupMinecraft.sh
 # ./SetupMinecraft.sh
 #
