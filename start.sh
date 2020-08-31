@@ -23,11 +23,11 @@ while [ -z "$DefaultRoute" ]; do
 done
 
 # Change directory to server directory
-cd dirname/minecraftbe/servername
+cd dirname/minecraftpudu/servername
 
 # Create backup
 if [ -d "worlds" ]; then
-    echo "Backing up server (to minecraftbe/servername/backups folder)"
+    echo "Backing up server (to minecraftpudu/servername/backups folder)"
     tar -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz worlds
 fi
 
@@ -57,4 +57,4 @@ fi
 
 echo "Starting Minecraft server.  To view window type screen -r servername"
 echo "To minimize the window and let the server run in the background, press Ctrl+A then Ctrl+D"
-screen -L -Logfile logs/$(date +%Y.%m.%d.%H.%M.%S).log -dmS servername /bin/bash -c "LD_LIBRARY_PATH=dirname/minecraftbe/servername dirname/minecraftbe/servername/bedrock_server"
+screen -L -Logfile logs/$(date +%Y.%m.%d.%H.%M.%S).log -dmS servername /bin/bash -c "LD_LIBRARY_PATH=dirname/minecraftpudu/servername dirname/minecraftpudu/servername/bedrock_server"

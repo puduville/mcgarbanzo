@@ -3,14 +3,14 @@
 #
 # Instructions: https://jamesachambers.com/minecraft-bedrock-edition-ubuntu-dedicated-server-guide/
 # To run the setup script use:
-# wget https://raw.githubusercontent.com/TheRemote/MinecraftBedrockServer/master/SetupMinecraft.sh
+# wget https://raw.githubusercontent.com/TheRemote/minecraftpududrockServer/master/SetupMinecraft.sh
 # chmod +x SetupMinecraft.sh
 # ./SetupMinecraft.sh
 #
-# GitHub Repository: https://github.com/TheRemote/MinecraftBedrockServer
+# GitHub Repository: https://github.com/TheRemote/minecraftpududrockServer
 
 echo "Minecraft Bedrock Server installation script by James Chambers - July 24th 2019"
-echo "Latest version always at https://github.com/TheRemote/MinecraftBedrockServer"
+echo "Latest version always at https://github.com/TheRemote/minecraftpududrockServer"
 echo "Don't forget to set up port forwarding on your router!  The default port is 19132"
 
 # Function to read input from user with a prompt
@@ -51,19 +51,19 @@ sudo apt-get install openssl -y
 
 # Check to see if Minecraft server main directory already exists
 cd ~
-if [ ! -d "minecraftbe" ]; then
-  mkdir minecraftbe
-  cd minecraftbe
+if [ ! -d "minecraftpudu" ]; then
+  mkdir minecraftpudu
+  cd minecraftpudu
 else
-  cd minecraftbe
+  cd minecraftpudu
   if [ -f "bedrock_server" ]; then
-    echo "Migrating old Bedrock server to minecraftbe/old"
+    echo "Migrating old Bedrock server to minecraftpudu/old"
     cd ~
-    mv minecraftbe old
-    mkdir minecraftbe
-    mv old minecraftbe/old
-    cd minecraftbe
-    echo "Migration complete to minecraftbe/old"
+    mv minecraftpudu old
+    mkdir minecraftpudu
+    mv old minecraftpudu/old
+    cd minecraftpudu
+    echo "Migration complete to minecraftpudu/old"
   fi
 fi
 
@@ -80,43 +80,43 @@ echo "Enter server IPV6 port (default 19133): "
 read_with_prompt PortIPV6 "Server IPV6 Port" 19133
 
 if [ -d "$ServerName" ]; then
-  echo "Directory minecraftbe/$ServerName already exists!  Updating scripts and configuring service ..."
+  echo "Directory minecraftpudu/$ServerName already exists!  Updating scripts and configuring service ..."
 
   # Get Home directory path and username
   DirName=$(readlink -e ~)
   UserName=$(whoami)
   cd ~
-  cd minecraftbe
+  cd minecraftpudu
   cd $ServerName
-  echo "Server directory is: $DirName/minecraftbe/$ServerName"
+  echo "Server directory is: $DirName/minecraftpudu/$ServerName"
 
   # Remove existing scripts
   rm start.sh stop.sh restart.sh
 
   # Download start.sh from repository
   echo "Grabbing start.sh from repository..."
-  wget -O start.sh https://raw.githubusercontent.com/TheRemote/MinecraftBedrockServer/master/start.sh
+  wget -O start.sh https://raw.githubusercontent.com/TheRemote/minecraftpududrockServer/master/start.sh
   chmod +x start.sh
   sed -i "s:dirname:$DirName:g" start.sh
   sed -i "s:servername:$ServerName:g" start.sh
 
   # Download stop.sh from repository
   echo "Grabbing stop.sh from repository..."
-  wget -O stop.sh https://raw.githubusercontent.com/TheRemote/MinecraftBedrockServer/master/stop.sh
+  wget -O stop.sh https://raw.githubusercontent.com/TheRemote/minecraftpududrockServer/master/stop.sh
   chmod +x stop.sh
   sed -i "s:dirname:$DirName:g" stop.sh
   sed -i "s:servername:$ServerName:g" stop.sh
 
   # Download restart.sh from repository
   echo "Grabbing restart.sh from repository..."
-  wget -O restart.sh https://raw.githubusercontent.com/TheRemote/MinecraftBedrockServer/master/restart.sh
+  wget -O restart.sh https://raw.githubusercontent.com/TheRemote/minecraftpududrockServer/master/restart.sh
   chmod +x restart.sh
   sed -i "s:dirname:$DirName:g" restart.sh
   sed -i "s:servername:$ServerName:g" restart.sh
 
   # Update minecraft server service
   echo "Configuring $ServerName service..."
-  sudo wget -O /etc/systemd/system/$ServerName.service https://raw.githubusercontent.com/TheRemote/MinecraftBedrockServer/master/minecraftbe.service
+  sudo wget -O /etc/systemd/system/$ServerName.service https://raw.githubusercontent.com/TheRemote/minecraftpududrockServer/master/minecraftpudu.service
   sudo chmod +x /etc/systemd/system/$ServerName.service
   sudo sed -i "s/replace/$UserName/g" /etc/systemd/system/$ServerName.service
   sudo sed -i "s:dirname:$DirName:g" /etc/systemd/system/$ServerName.service
@@ -133,7 +133,7 @@ if [ -d "$ServerName" ]; then
     echo -n "Automatically restart and backup server at 4am daily (y/n)?"
     read answer < /dev/tty
     if [ "$answer" != "${answer#[Yy]}" ]; then
-      croncmd="$DirName/minecraftbe/$ServerName/restart.sh"
+      croncmd="$DirName/minecraftpudu/$ServerName/restart.sh"
       cronjob="0 4 * * * $croncmd"
       ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
       echo "Daily restart scheduled.  To change time or remove automatic restart type crontab -e"
@@ -153,9 +153,9 @@ if [ -d "$ServerName" ]; then
 fi
 
 # Create server directory
-echo "Creating minecraft server directory (~/minecraftbe/$ServerName)..."
+echo "Creating minecraft server directory (~/minecraftpudu/$ServerName)..."
 cd ~
-cd minecraftbe
+cd minecraftpudu
 mkdir $ServerName
 cd $ServerName
 mkdir downloads
@@ -196,11 +196,11 @@ if [[ "$CPUArch" == *"aarch"* || "$CPUArch" == *"arm"* ]]; then
   fi
   
   # Retrieve depends.zip from GitHub repository
-  wget -O depends.zip https://raw.githubusercontent.com/TheRemote/MinecraftBedrockServer/master/depends.zip
+  wget -O depends.zip https://raw.githubusercontent.com/TheRemote/minecraftpududrockServer/master/depends.zip
   unzip depends.zip
   sudo mkdir /lib64
   # Create soft link ld-linux-x86-64.so.2 mapped to ld-2.28.so
-  sudo ln -s ~/minecraftbe/$ServerName/ld-2.28.so /lib64/ld-linux-x86-64.so.2
+  sudo ln -s ~/minecraftpudu/$ServerName/ld-2.28.so /lib64/ld-linux-x86-64.so.2
 fi
 
 # Retrieve latest version of Minecraft Bedrock dedicated server
@@ -220,28 +220,28 @@ unzip -o "downloads/$DownloadFile"
 
 # Download start.sh from repository
 echo "Grabbing start.sh from repository..."
-wget -O start.sh https://raw.githubusercontent.com/TheRemote/MinecraftBedrockServer/master/start.sh
+wget -O start.sh https://raw.githubusercontent.com/TheRemote/minecraftpududrockServer/master/start.sh
 chmod +x start.sh
 sed -i "s:dirname:$DirName:g" start.sh
 sed -i "s:servername:$ServerName:g" start.sh
 
 # Download stop.sh from repository
 echo "Grabbing stop.sh from repository..."
-wget -O stop.sh https://raw.githubusercontent.com/TheRemote/MinecraftBedrockServer/master/stop.sh
+wget -O stop.sh https://raw.githubusercontent.com/TheRemote/minecraftpududrockServer/master/stop.sh
 chmod +x stop.sh
 sed -i "s:dirname:$DirName:g" stop.sh
 sed -i "s:servername:$ServerName:g" stop.sh
 
 # Download restart.sh from repository
 echo "Grabbing restart.sh from repository..."
-wget -O restart.sh https://raw.githubusercontent.com/TheRemote/MinecraftBedrockServer/master/restart.sh
+wget -O restart.sh https://raw.githubusercontent.com/TheRemote/minecraftpududrockServer/master/restart.sh
 chmod +x restart.sh
 sed -i "s:dirname:$DirName:g" restart.sh
 sed -i "s:servername:$ServerName:g" restart.sh
 
 # Service configuration
 echo "Configuring Minecraft $ServerName service..."
-sudo wget -O /etc/systemd/system/$ServerName.service https://raw.githubusercontent.com/TheRemote/MinecraftBedrockServer/master/minecraftbe.service
+sudo wget -O /etc/systemd/system/$ServerName.service https://raw.githubusercontent.com/TheRemote/minecraftpududrockServer/master/minecraftpudu.service
 sudo chmod +x /etc/systemd/system/$ServerName.service
 sudo sed -i "s/replace/$UserName/g" /etc/systemd/system/$ServerName.service
 sudo sed -i "s:dirname:$DirName:g" /etc/systemd/system/$ServerName.service
@@ -263,7 +263,7 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
   echo -n "Automatically restart and backup server at 4am daily (y/n)?"
   read answer < /dev/tty
   if [ "$answer" != "${answer#[Yy]}" ]; then
-    croncmd="$DirName/minecraftbe/$ServerName/restart.sh"
+    croncmd="$DirName/minecraftpudu/$ServerName/restart.sh"
     cronjob="0 4 * * * $croncmd"
     ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
     echo "Daily restart scheduled.  To change time or remove automatic restart type crontab -e"
